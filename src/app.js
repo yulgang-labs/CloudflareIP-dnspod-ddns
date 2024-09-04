@@ -3,6 +3,15 @@ const { updateCloudflareIp } = require("./controller");
 const schedule = require("node-schedule");
 const app = new Koa();
 
+// 捕捉脚本异常，防止意外退出
+process.on('uncaughtException',(err,origin)=>{//捕捉uncaughtException
+        console.error('[uncaughtException]',err,origin);
+});
+
+process.on('unhandledRejection',(err,promise)=>{//捕捉unhandledRejection
+        console.error('[unhandledRejection]',err);
+});
+
 app.use(async ctx => {
   if (ctx.request.url == "/updateCloudflareIp") {
     ctx.body = await updateCloudflareIp();
@@ -10,6 +19,9 @@ app.use(async ctx => {
     ctx.body = "Cloudflare IP DDNS Running Successfully!";
   }
 });
+
+//脚本启动后立即执行一次更新操作
+updateCloudflareIp();
 
 // 每隔15分钟更新Cloudflare优选IP
 schedule.scheduleJob("*/15 * * * *", updateCloudflareIp);
