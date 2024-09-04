@@ -2,6 +2,39 @@
 
 Cloudflare 优选 IP，并通过 dnspod 自动切换，15 分钟更新一次
 
+### 0.环境配置
+
+> Debian为例：
+
+> 安装nodejs
+
+`curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -`
+
+`sudo apt install -y nodejs`
+
+> 安装pnpm包
+
+`npm install -g pnpm`
+
+如果无法联网，那就试试使用http代理 
+
+`npm --proxy http://http-proxyserver:port install -g pnpm`
+
+
+
+> 安装依赖
+
+`cd CloudflareIP-dnspod-ddns-main`
+
+`pnpm install`
+
+> 根据实际情况修改 src/config.js 中DDNSPOD的secretId、secretKey、Domain及SubDomain
+
+> 运行脚本
+
+`node src/app.js`
+
+
 ### 1.自行部署
 
 > 在 DNSPod 中添加子域名的 Ipv4 和 Ipv6 解析记录后,可开启脚本
